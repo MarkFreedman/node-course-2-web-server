@@ -7,11 +7,20 @@ var app = express();
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
 
+// app.use((req, res, next) => {
+//     res.render('maint.hbs');
+// });
+
 app.use((req, res, next) => {
     var now = new Date().toString();
     var logLine = `${now}: ${req.method} ${req.url}`;
+
     console.log(logLine);
-    fs.appendFile('server.log', logLine + '\n');
+
+    fs.appendFile('server.log', logLine + '\n', (err) => {
+        if (err) console.log(err);
+    });
+
     next();
 });
 
